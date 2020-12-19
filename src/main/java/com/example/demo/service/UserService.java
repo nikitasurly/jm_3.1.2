@@ -11,5 +11,5 @@ public interface UserService {
     void delete(Long id);
     List<User> listUsers();
     User find(Long id);
-    User getUserByLogin();
+    User getUserByEmail();
 }

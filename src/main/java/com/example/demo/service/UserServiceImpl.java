@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByLogin() {
-        return userRepository.getByLogin(getCurrentLogin());
+    public User getUserByEmail() {
+        return userRepository.getByEmail(getCurrentEmail());
     }
 
-    private String getCurrentLogin() {
+    private String getCurrentEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }

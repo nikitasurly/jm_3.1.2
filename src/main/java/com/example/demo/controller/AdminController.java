@@ -25,44 +25,19 @@ public class AdminController {
 
     private final RoleService roleService;
 
-    @GetMapping("/users")
+    @GetMapping
     public String listUsers(ModelMap model) {
         model.addAttribute("users", userService.listUsers());
-        return "all_users";
-    }
-
-    @GetMapping("/users/new")
-    public String newUser(ModelMap model) {
         model.addAttribute("user", new User());
         model.addAttribute("allRoles", roleService.getListRoles());
-        return "add";
+        return "admin";
     }
 
-    @PostMapping("/users")
-    public String add(@ModelAttribute("user") User user,
+    @PostMapping
+    public String add(@ModelAttribute User user,
                       @RequestParam(value = "role", required = false)
                               String[] roleFromForm) {
 
-        return getString(user, roleFromForm);
-    }
-
-    @GetMapping("/edit/{id}")
-    public String setUser(@PathVariable("id") Long id,
-                                ModelMap model) {
-        model.addAttribute("user", userService.find(id));
-        model.addAttribute("allRoles", roleService.getListRoles());
-        return "edit";
-    }
-
-    @PostMapping("/edit")
-    public String set(@ModelAttribute("user") User user,
-                      @RequestParam(value = "role", required = false)
-                              String[] roleFromForm) {
-
-        return getString(user, roleFromForm);
-    }
-
-    private String getString(@ModelAttribute("user") User user, @RequestParam(value = "role", required = false) String[] roleFromForm) {
         Set<Role> roles = new HashSet<>();
         if (Objects.nonNull(roleFromForm)) {
             for (String role : roleFromForm) {
@@ -71,13 +46,13 @@ public class AdminController {
         }
         user.setRoles(roles);
         userService.add(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @PostMapping("/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
 }

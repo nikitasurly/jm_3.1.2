@@ -16,7 +16,7 @@ public class UserController {
 
 	@GetMapping
 	public String getUserPage(ModelMap model) {
-		model.addAttribute("user", userService.getUserByLogin());
+		model.addAttribute("user", userService.getUserByEmail());
 		return "user";
 	}
 
