@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">  <title>Admin panel</title>
+  <style type="text/css">
+      .sidebar {
+          height: 94vh;
+      }
+      .container-fluid {
+          height: 6vh;
+      }
+      .col-10 {
+          padding-left: 25px;
+          padding-right: 25px;
+          padding-top: 12px;
+      }
+      .center{
+          display: block;
+          margin: 0 auto;
+      }
+  </style>
+</head>
+<body>
+
+<!--///////////////////////////////////////////////панель навигации-->
+<div class="container-fluid">
+  <div class="row bg-dark">
+    <div class="col-11">
+      <a class="navbar-brand text-white">
+        <span class="font-weight-bold" id="emailCurrentUser">Email</span>
+        with roles:
+        <span id="rolesCurrentUser">Role</span>
+      </a>
+    </div>
+    <div class="col">
+      <a href="/logout" class="navbar-brand text-white-50"><small>Logout</small></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="row">
+
+<!--   //////////////////////////////////////////////////////// боковая панель-->
+    <div class="col-2 p-0 pt-3 sidebar bg-white">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link" onclick="showHomePage()" hidden id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+        <a class="nav-link" hidden id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
+      </div>
+    </div>
+
+<!--  //////////////////////////////////////////////////////  основа-->
+    <div class="col-10 bg-light">
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab"  >
+          <h1>User information-page</h1>
+          <div class="card">
+            <h5 class="card-header">
+              About user
+            </h5>
+            <div class="card-body bg-white">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>First name</th>
+                  <th>Last Name</th>
+                  <th>Age</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                </tr>
+                </thead>
+                <tbody id="currentUserTable">
+<!--                <tr>-->
+<!--                  <td th:utext="${user.getId()}">Id</td>-->
+<!--                  <td th:utext="${user.getFirstName()}">First name</td>-->
+<!--                  <td th:utext="${user.getLastName()}">Last name</td>-->
+<!--                  <td th:utext="${user.getAge()}">Age</td>-->
+<!--                  <td th:utext="${user.getEmail()}">Email</td>-->
+<!--                  <td th:text="${#strings.arrayJoin(user.roles, ' ')}">Role</td>-->
+<!--                </tr>-->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade show" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-admin-tab">
+          <h1>Admin panel</h1>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#allusers" role="tab" aria-controls="home" aria-selected="true">Users table</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#new-user" role="tab" aria-controls="profile" aria-selected="false">New user</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="allusers" role="tabpanel" aria-labelledby="home-tab">
+              <div class="card">
+                <h5 class="card-header">
+                  All users
+                </h5>
+                <div class="card-body bg-white">
+                  <table class="table table-striped">
+                    <tr class="bg-white">
+                      <th>ID</th>
+                      <th>First name</th>
+                      <th>Last Name</th>
+                      <th>Age</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
+                    </tr>
+                    <tbody id="users_table">
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+<!--   добавление нового юзера-->
+            <div class="tab-pane fade" id="new-user" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="card">
+                <h5 class="card-header">
+                  Add new user
+                </h5>
+                <div class="card-body bg-white">
+                  <div class="col-4 mx-auto">
+                    <div hidden id="id"></div>
+                    <div class="form-group text-center font-weight-bold">
+                      <label for="firstName">First name</label>
+                      <input type="text" class="form-control" id="firstName" placeholder="First name" autofocus>
+                    </div>
+                    <div class="form-group text-center font-weight-bold">
+                      <label for="lastName">Last name</label>
+                      <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                    </div>
+                    <div class="form-group text-center font-weight-bold">
+                      <label for="age">Age</label>
+                      <input type="number" class="form-control" id="age" placeholder="Age">
+                    </div>
+                    <div class="form-group text-center font-weight-bold">
+                      <label for="email">Email address</label>
+                      <input type="email" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group text-center font-weight-bold">
+                      <label for="password">Password</label>
+                      <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                    <div class="form-check form-check-inline font-weight-bold" id="roles_checkbox">
+                    </div>
+                    <div><button class="btn btn-success btn-lg center" id="addBtn" onclick="addUser()">Add new user</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--модальное окно удаления-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+       <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-7 mx-auto">
+          <div class="form-group text-center font-weight-bold">
+            <label for="idDel">ID</label>
+            <input type="text" class="form-control" id="idDel" readonly/>
+          </div>
+          <div class="form-group text-center font-weight-bold">
+            <label for="firstNameDel">First name</label>
+            <input type="text" class="form-control" id="firstNameDel" placeholder="First name" readonly/>
+          </div>
+          <div class="form-group text-center font-weight-bold">
+            <label for="lastNameDel">Last name</label>
+            <input type="text" class="form-control" id="lastNameDel" placeholder="Last name" readonly/>
+          </div>
+          <div class="form-group text-center font-weight-bold">
+            <label for="ageDel">Age</label>
+            <input type="text" class="form-control" id="ageDel" placeholder="Age" readonly/>
+          </div>
+          <div class="form-group text-center font-weight-bold">
+            <label for="emailDel">Email address</label>
+            <input type="email" class="form-control" id="emailDel" placeholder="Email" readonly/>
+          </div>
+          <div class="form-check form-check-inline font-weight-bold" id="del_role_checkbox">
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" id="deleteBtn" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--модальное окно изменения-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-7 mx-auto">
+            <div class="form-group text-center font-weight-bold">
+              <label for="idEdit">ID</label>
+              <input type="text" class="form-control" id="idEdit" placeholder="ID" required readonly/>
+            </div>
+            <div class="form-group text-center font-weight-bold">
+              <label for="firstNameEdit">First name</label>
+              <input type="text" class="form-control" id="firstNameEdit" required placeholder="First name"/>
+            </div>
+            <div class="form-group text-center font-weight-bold">
+              <label for="lastNameEdit">Last name</label>
+              <input type="text" class="form-control" id="lastNameEdit" required placeholder="Last name"/>
+            </div>
+            <div class="form-group text-center font-weight-bold">
+              <label for="ageEdit">Age</label>
+              <input type="number" class="form-control" id="ageEdit" required placeholder="Age"/>
+            </div>
+            <div class="form-group text-center font-weight-bold">
+              <label for="emailEdit">Email address</label>
+              <input type="email" class="form-control" id="emailEdit" required placeholder="Email"/>
+            </div>
+            <div class="form-group text-center font-weight-bold">
+              <label for="passwordEdit">Password</label>
+              <input type="password" class="form-control" id="passwordEdit" required placeholder="Password"/>
+            </div>
+            <div class="form-check form-check-inline font-weight-bold" id="edit_role_checkbox">
+
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" id="editBtn" class="btn btn-primary">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script src="/test.js" type="text/javascript" async></script>
+
+</body>
+</html>

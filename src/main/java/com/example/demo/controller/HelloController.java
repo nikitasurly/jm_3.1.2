@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class HelloController {
 
     @GetMapping("/")
@@ -17,4 +19,13 @@ public class HelloController {
         return "login";
     }
 
+    @GetMapping("/user")
+    public String getUserPage() {
+        return "main";
+    }
+
+    @GetMapping("/admin")
+    public String getAdminPage() {
+        return "main";
+    }
 }

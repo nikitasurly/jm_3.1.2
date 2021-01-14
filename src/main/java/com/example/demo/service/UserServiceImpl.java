@@ -5,6 +5,8 @@ import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void add(User user) {
-        userRepository.save(user);
+    public User saveOrUpdate(User user) {
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -40,13 +42,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail() {
+    public User getUserByCurrentEmail() {
         return userRepository.getByEmail(getCurrentEmail());
     }
 
     private String getCurrentEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
+        return userRepository.getByEmail(email);
     }
 
 }
